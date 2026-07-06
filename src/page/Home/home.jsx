@@ -3,6 +3,8 @@ import "./home.css";
 import Hero from "./Components/Hero";
 import Navbar from "./Components/Navbar";
 import AboutUs from "./Components/AboutUs";
+import ContactUs from "./Components/ContactUs";
+import Footer from "./Components/Footer";
 
 function Home() {
 	return (
@@ -10,6 +12,8 @@ function Home() {
 			<Navbar />
 			<Hero />
 			<AboutUs />
+			<ContactUs />
+			<Footer />
 		</>
 	);
 }
