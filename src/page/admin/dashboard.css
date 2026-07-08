@@ -13,39 +13,99 @@ body {
 .sidebar {
 	width: 260px;
 	min-height: 100vh;
-	background: #F4498C;
+	background: black;
 }
 
-
 .sidebar .nav-link {
-    color: black;
+	color: white;
 	display: flex;
 	align-items: center;
 	gap: 12px;
 	padding: 14px 25px;
 	transition: 0.3s;
+	margin: 0 15px;
+	border-radius: 10px;
 }
 
 .sidebar .nav-link:hover {
-	background: rgb(191, 57, 111);
+	background: #424242;
 	color: white;
 }
 
 .sidebar .active .nav-link {
-	background: #c23970;
+	background: #f4498c;
 	color: white;
 }
 
 .logOut {
-	color: black;
-	padding: 20px;
+	color: white;
+	padding: 10px;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.btn-Logout {
+	border-radius: 8px;
+	padding: 5px 20px;
+}
+
+.btn-Logout:hover {
+	background: #c90d0dc8;
+	cursor: pointer;
+}
 
 /* CONTENIDO */
 
 .content {
 	flex: 1;
-	background: #f5f7fb;
+	background: #f2f2f2;
+}
+
+.contentTitle {
+	margin: 15px 20px;
+	background-color: white;
+	padding: 10px 20px;
+	border-radius: 10px;
+}
+
+.contentTitle > h2 {
+	font-size: 25px;
+	margin: 0;
+}
+
+.contentMain {
+	margin: 15px 20px;
+	background-color: white;
+	padding: 20px 30px;
+	border-radius: 10px;
+	height: 88%;
+}
+
+.contentMain > h3 {
+	font-size: 20px;
+	margin: 0;
+}
+
+.acciones {
+	display: flex;
+	justify-content: center;
+}
+
+/* DETALLE PRODUCTO */
+.btn-return {
+	background-color: black;
+	color: white;
+	border-radius: 10px;
+	border: 1px solid black;
+	padding: 5px 20px;
+	font-size: 15px;
+	margin: 0 !important;
+}
+.btn-return:hover {
+	border: 1px solid black;
+}
+
+.title-btn {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
