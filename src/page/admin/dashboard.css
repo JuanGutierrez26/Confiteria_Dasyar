@@ -1,0 +1,51 @@
+body {
+	margin: 0;
+	background: #f5f7fb;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.app {
+	display: flex;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+	width: 260px;
+	min-height: 100vh;
+	background: #F4498C;
+}
+
+
+.sidebar .nav-link {
+    color: black;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 14px 25px;
+	transition: 0.3s;
+}
+
+.sidebar .nav-link:hover {
+	background: rgb(191, 57, 111);
+	color: white;
+}
+
+.sidebar .active .nav-link {
+	background: #c23970;
+	color: white;
+}
+
+.logOut {
+	color: black;
+	padding: 20px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+/* CONTENIDO */
+
+.content {
+	flex: 1;
+	background: #f5f7fb;
+}
