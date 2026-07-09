@@ -94,6 +94,7 @@ function ContactUs() {
 							<button
 								type="submit"
 								disabled={loading}
+								className="btn-ContactUs"
 							>
 								{loading ? "Enviando..." : "Enviar"}
 							</button>

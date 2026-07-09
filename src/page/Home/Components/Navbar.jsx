@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 function Navbar() {
 	const [scrolled, setScrolled] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -16,7 +17,9 @@ function Navbar() {
 	}, []);
 
 	return (
-		<nav className={`navbar fixed-top navbar-expand-lg ${scrolled ? "navbar-scrolled" : ""}`}>
+		<nav
+			className={`navbar fixed-top navbar-dark navbar-expand-lg ${scrolled ? "navbar-scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}
+		>
 			<div className="container-fluid">
 				<a className="navbar-brand navbar__title" href="#">
 					Confitería Dasyar
@@ -27,6 +30,7 @@ function Navbar() {
 					type="button"
 					data-bs-toggle="collapse"
 					data-bs-target="#navbarText"
+					onClick={() => setMenuOpen(!menuOpen)}
 				>
 					<span className="navbar-toggler-icon"></span>
 				</button>
