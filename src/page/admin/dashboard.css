@@ -77,7 +77,8 @@ body {
 	background-color: white;
 	padding: 20px 30px;
 	border-radius: 10px;
-	height: 88%;
+	height: 88vh;
+	overflow-y: auto;
 }
 
 .contentMain > h3 {
@@ -105,6 +106,68 @@ body {
 	justify-content: center;
 	gap: 5px;
 }
+
+.product-title {
+	font-weight: 600;
+	color: #333;
+}
+
+.product-tag {
+	font-size: 0.85rem;
+	padding: 7px 14px;
+	background-color: #ffe8a3 !important;
+	color: #8a5a00 !important;
+}
+
+.price-tag {
+	font-weight: 700;
+	color: #198754;
+	background: #d1f7df;
+	padding: 6px 12px;
+	border-radius: 8px;
+}
+
+.stars-container {
+	display: flex;
+	align-items: center;
+}
+
+.star {
+	color: #dcdcdc;
+	font-size: 17px;
+}
+
+.star.active {
+	color: #ffc107;
+}
+
+.status-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.status-active {
+	background-color: #d1e7dd;
+	color: #0f5132;
+}
+
+.status-inactive {
+	background-color: #f8d7da;
+	color: #842029;
+}
+
+.status-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: currentColor;
+}
+
 .image-dropzone {
 	width: 100%;
 	min-height: 220px;

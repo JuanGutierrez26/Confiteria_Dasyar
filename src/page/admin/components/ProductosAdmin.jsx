@@ -1,6 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { BsThreeDotsVertical, BsEye, BsTrash } from "react-icons/bs";
-import { crearProducto, obtenerProductosAdmin } from "../../../api/productos/producto";
+import {
+	BsThreeDotsVertical,
+	BsEye,
+	BsTrash,
+	BsStarFill,
+	BsPencil,
+	BsArrowRepeat,
+} from "react-icons/bs";
+import {
+	actualizarProducto,
+	crearProducto,
+	eliminarProducto,
+	obtenerProductosAdmin,
+	restaurarProducto,
+} from "../../../api/productos/producto";
 import { obtenerCategoria } from "../../../api/Categoria/categoria";
 import { FaPlus } from "react-icons/fa";
 import { uploadProductImage } from "../../../api/upload";
@@ -13,6 +26,10 @@ function ProductosAdmin({ onVerProducto }) {
 	const inputFileRef = useRef(null);
 	const [imageFile, setImageFile] = useState(null);
 	const [uploading, setUploading] = useState(false);
+	const [productoEliminar, setProductoEliminar] = useState(null);
+	const modalRef = useRef(null);
+	const [modoEdicion, setModoEdicion] = useState(false);
+	const [productoEditar, setProductoEditar] = useState(null);
 
 	useEffect(() => {
 		const cargarDatos = async () => {
@@ -77,33 +94,47 @@ function ProductosAdmin({ onVerProducto }) {
 	};
 
 	const closeModal = () => {
-		const modal = document.getElementById("staticBackdrop");
-		if (modal && window.bootstrap) {
-			const modalInstance =
-				window.bootstrap.Modal.getInstance(modal) || new window.bootstrap.Modal(modal);
-			modalInstance.hide();
-		}
+		const modalElement = document.getElementById("staticBackdrop");
+
+		const modal = window.bootstrap.Modal.getOrCreateInstance(modalElement);
+
+		modal.hide();
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		try {
-			await crearProducto({
-				...product,
-				categoria_id: Number(product.categoria_id),
-				estrellas: Number(product.estrellas),
-				stock: Number(product.stock),
-				precio: Number(product.precio),
-			});
+			if (modoEdicion) {
+				await actualizarProducto(productoEditar.id, {
+					...product,
+					categoria_id: Number(product.categoria_id),
+					estrellas: Number(product.estrellas),
+					stock: Number(product.stock),
+					precio: Number(product.precio),
+					imagen_principal: String(product.imagen_principal),
+				});
+			} else {
+				await crearProducto({
+					...product,
+					categoria_id: Number(product.categoria_id),
+					estrellas: Number(product.estrellas),
+					stock: Number(product.stock),
+					precio: Number(product.precio),
+				});
+			}
 
 			const data = await obtenerProductosAdmin();
 			setProductos(data);
+
 			resetForm();
+			setModoEdicion(false);
+			setProductoEditar(null);
+
 			closeModal();
-		} catch (err) {
-			console.error(err);
-			setError("No se pudo guardar el producto.");
+		} catch (error) {
+			console.error(error);
+			setError("No se pudo guardar el producto");
 		}
 	};
 
@@ -158,6 +189,55 @@ function ProductosAdmin({ onVerProducto }) {
 		}
 	};
 
+	const handleEditar = (producto) => {
+		setModoEdicion(true);
+		setProductoEditar(producto);
+
+		setProduct({
+			categoria_id: producto.categoria_id,
+			titulo: producto.titulo,
+			descripcion_corta: producto.descripcion_corta,
+			etiqueta: producto.etiqueta,
+			url_producto: producto.url_producto,
+			imagen_principal: producto.imagen_principal,
+			estrellas: producto.estrellas,
+			stock: producto.stock,
+			descripcion_larga: producto.descripcion_larga,
+			precio: producto.precio,
+		});
+	};
+
+	const handleEliminar = async () => {
+		if (!productoEliminar) return;
+
+		try {
+			await eliminarProducto(productoEliminar.id);
+
+			setProductos((prev) =>
+				prev.map((p) => (p.id === productoEliminar.id ? { ...p, isActive: false } : p)),
+			);
+
+			setProductoEliminar(null);
+
+			const modalElement = document.getElementById("modalEliminar");
+			const modal = window.bootstrap.Modal.getOrCreateInstance(modalElement);
+
+			modal.hide();
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const handleReactivar = async (producto) => {
+		try {
+			await restaurarProducto(producto.id);
+
+			const data = await obtenerProductosAdmin();
+			setProductos(data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 	return (
 		<>
 			<div>
@@ -165,7 +245,7 @@ function ProductosAdmin({ onVerProducto }) {
 					<h3>Productos</h3>
 					<button
 						type="button"
-						class="btn btn-dark btn-sm btn__Agregar"
+						className="btn btn-dark btn-sm btn__Agregar"
 						data-bs-toggle="modal"
 						data-bs-target="#staticBackdrop"
 					>
@@ -177,7 +257,7 @@ function ProductosAdmin({ onVerProducto }) {
 			</div>
 
 			<div
-				class="modal fade"
+				className="modal fade"
 				id="staticBackdrop"
 				data-bs-backdrop="static"
 				data-bs-keyboard="false"
@@ -185,20 +265,20 @@ function ProductosAdmin({ onVerProducto }) {
 				aria-labelledby="staticBackdropLabel"
 				aria-hidden="true"
 			>
-				<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="staticBackdropLabel">
-								Agregar Producto
+				<div className="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h1 className="modal-title fs-5">
+								{modoEdicion ? "Editar Producto" : "Agregar Producto"}
 							</h1>
 							<button
 								type="button"
-								class="btn-close"
+								className="btn-close"
 								data-bs-dismiss="modal"
 								aria-label="Close"
 							></button>
 						</div>
-						<div class="modal-body">
+						<div className="modal-body">
 							<form id="productoForm" onSubmit={handleSubmit}>
 								<div className="row g-3">
 									<div className="col-md-6">
@@ -306,7 +386,11 @@ function ProductosAdmin({ onVerProducto }) {
 										<label className="form-label">Imagen del producto</label>
 
 										<div
-											className={`image-dropzone ${imageFile ? "image-dropzone-success" : ""}`}
+											className={`image-dropzone ${
+												imageFile || product.imagen_principal || product.url_producto
+													? "image-dropzone-success"
+													: ""
+											}`}
 											onDragOver={(e) => e.preventDefault()}
 											onDrop={handleDrop}
 											onClick={() => inputFileRef.current.click()}
@@ -320,33 +404,21 @@ function ProductosAdmin({ onVerProducto }) {
 											/>
 
 											{imageFile ? (
-												<>
-													<p className="mb-2 fw-bold">{imageFile.name}</p>
-
-													<button
-														type="button"
-														className="btn btn-danger btn-sm"
-														onClick={(e) => {
-															e.stopPropagation();
-															handleRemoveImage();
-														}}
-													>
-														Eliminar imagen
-													</button>
-												</>
+												<p>{imageFile.name}</p>
+											) : product.imagen_principal ? (
+												<img src={product.imagen_principal} alt="Producto" width="120" />
 											) : (
-												<>
-													<i className="bi bi-cloud-arrow-up fs-1"></i>
-
-													<p className="mt-2">Arrastra una imagen aquí o haz clic</p>
-												</>
+												<p>Arrastra una imagen aquí o haz clic</p>
 											)}
 										</div>
 
 										<button
 											type="button"
 											className="btn btn-primary mt-3"
-											disabled={!imageFile || uploading}
+											disabled={
+												(!imageFile && (!product.imagen_principal || !product.url_producto)) ||
+												uploading
+											}
 											onClick={handleUploadImage}
 										>
 											{uploading ? "Subiendo..." : "Subir imagen"}
@@ -355,20 +427,22 @@ function ProductosAdmin({ onVerProducto }) {
 								</div>
 							</form>
 						</div>
-						<div class="modal-footer">
+						<div className="modal-footer">
 							<button
 								type="button"
-								class="btn btn-secondary"
+								className="btn btn-secondary"
 								data-bs-dismiss="modal"
 								onClick={() => {
 									resetForm();
+									setModoEdicion(false);
+									setProductoEditar(null);
 									closeModal();
 								}}
 							>
 								Cancelar
 							</button>
-							<button type="submit" form="productoForm" class="btn btn-primary">
-								Guardar Producto
+							<button type="submit" form="productoForm" className="btn btn-primary">
+								{modoEdicion ? "Actualizar Producto" : "Guardar Producto"}
 							</button>
 						</div>
 					</div>
@@ -397,11 +471,43 @@ function ProductosAdmin({ onVerProducto }) {
 						{productos.map((producto, index) => (
 							<tr key={producto.id || index}>
 								<th scope="row">{index + 1}</th>
-								<td>{producto.titulo}</td>
-								<td>{producto.etiqueta}</td>
-								<td>{producto.precio}</td>
-								<td>{producto.estrellas}/5</td>
-								<td>{producto.isActive ? "Activo" : "Inactivo"}</td>
+								<td>
+									<span className="product-title">{producto.titulo}</span>
+								</td>
+
+								<td>
+									<span className="badge rounded-pill bg-info text-dark product-tag">
+										{producto.etiqueta}
+									</span>
+								</td>
+
+								<td>
+									<span className="price-tag">S/ {Number(producto.precio).toFixed(2)}</span>
+								</td>
+
+								<td>
+									<div className="stars-container">
+										{Array.from({ length: 5 }).map((_, i) => (
+											<BsStarFill
+												key={i}
+												className={i < producto.estrellas ? "star active" : "star"}
+											/>
+										))}
+
+										<span className="ms-2">{producto.estrellas}/5</span>
+									</div>
+								</td>
+
+								<td>
+									<span
+										className={`status-badge ${
+											producto.isActive ? "status-active" : "status-inactive"
+										}`}
+									>
+										<span className="status-dot"></span>
+										{producto.isActive ? "Activo" : "Inactivo"}
+									</span>
+								</td>
 								<td className="acciones">
 									<div className="dropdown">
 										<button
@@ -422,11 +528,46 @@ function ProductosAdmin({ onVerProducto }) {
 													<BsEye className="me-2" /> Ver
 												</button>
 											</li>
-											<li>
-												<button className="dropdown-item text-danger" type="button">
-													<BsTrash className="me-2" /> Eliminar
-												</button>
-											</li>
+											{producto.isActive ? (
+												<>
+													<li>
+														<button
+															className="dropdown-item"
+															type="button"
+															data-bs-toggle="modal"
+															data-bs-target="#staticBackdrop"
+															onClick={() => handleEditar(producto)}
+														>
+															<BsPencil className="me-2" />
+															Editar
+														</button>
+													</li>
+
+													<li>
+														<button
+															className="dropdown-item text-danger"
+															type="button"
+															data-bs-toggle="modal"
+															data-bs-target="#modalEliminar"
+															onClick={() => setProductoEliminar(producto)}
+														>
+															<BsTrash className="me-2" />
+															Eliminar
+														</button>
+													</li>
+												</>
+											) : (
+												<li>
+													<button
+														className="dropdown-item text-success"
+														type="button"
+														onClick={() => handleReactivar(producto)}
+													>
+														<BsArrowRepeat className="me-2" />
+														Reactivar
+													</button>
+												</li>
+											)}
 										</ul>
 									</div>
 								</td>
@@ -435,6 +576,39 @@ function ProductosAdmin({ onVerProducto }) {
 					</tbody>
 				</table>
 			)}
+			<div
+				className="modal fade"
+				id="modalEliminar"
+				tabIndex={-1}
+				aria-labelledby="modalEliminarLabel"
+				aria-hidden="true"
+			>
+				<div className="modal-dialog modal-dialog-centered">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h5 className="modal-title" id="modalEliminarLabel">
+								Eliminar producto
+							</h5>
+
+							<button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<div className="modal-body">
+							¿Deseas eliminar el producto <strong>{productoEliminar?.titulo}</strong>?
+						</div>
+
+						<div className="modal-footer">
+							<button className="btn btn-secondary" data-bs-dismiss="modal">
+								Cancelar
+							</button>
+
+							<button className="btn btn-danger" onClick={handleEliminar}>
+								Eliminar
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</>
 	);
 }

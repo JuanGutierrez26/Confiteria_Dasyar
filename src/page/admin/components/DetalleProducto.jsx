@@ -1,45 +1,60 @@
+import { useEffect, useState } from "react";
+import TableEspecificaciones from "./tablas/Especificaciones";
+import TableDetalleInfo from "./tablas/DetalleInfo";
+
 function DetalleProducto({ producto, onVolver }) {
-	if (!producto) {
+	const [productoDetalle, setProductoDetalle] = useState(producto);
+
+	useEffect(() => {
+		setProductoDetalle(producto);
+	}, [producto]);
+
+	if (!productoDetalle) {
 		return null;
 	}
 
 	return (
 		<div>
 			<div className="title-btn">
-				<h4>{producto.titulo}</h4>
+				<h4>{productoDetalle.detalle.titulo}</h4>
 				<button type="button" className="btn btn-return mb-3" onClick={onVolver}>
 					← Volver
 				</button>
 			</div>
-			<p className="text-muted">{producto.descripcion_larga || producto.descripcion_corta}</p>
+			<p className="text-muted">
+				{productoDetalle.detalle.descripcion_larga || productoDetalle.detalle.descripcion_corta}
+			</p>
 
-            <div className="infoGeneral">
-
-            </div>
+			<div className="infoGeneral"></div>
 
 			<div className="row g-3">
-				<div className="col-md-6">
+				<div className="col-md-8">
 					<div className="card p-3">
 						<p className="mb-1">
-							<strong>ID:</strong> {producto.id || producto.producto_id}
+							<strong>ID:</strong> {producto.detalle.id || producto.detalle.producto_id}
 						</p>
 						<p className="mb-1">
-							<strong>Precio:</strong> S/ {producto.precio}
+							<strong>Precio:</strong> S/ {producto.detalle.precio}
 						</p>
 						<p className="mb-1">
-							<strong>Estrellas:</strong> {producto.estrellas}/5
+							<strong>Estrellas:</strong> {producto.detalle.estrellas}/5
 						</p>
 						<p className="mb-1">
-							<strong>Stock:</strong> {producto.stock}
+							<strong>Stock:</strong> {producto.detalle.stock}
 						</p>
-						{producto.imagen_principal ? (
+						{producto.detalle.imagen_principal ? (
 							<p className="mb-0">
-								<strong>Imagen:</strong> {producto.imagen_principal}
+								<strong>Imagen:</strong> {producto.detalle.imagen_principal}
 							</p>
 						) : null}
 					</div>
 				</div>
+				<div className="col-md-4 co">
+					<img src={productoDetalle.detalle.imagen_principal} alt="Imagen del producto" />
+				</div>
 			</div>
+			<TableEspecificaciones producto={productoDetalle} setProducto={setProductoDetalle} />
+			<TableDetalleInfo producto={productoDetalle} setProducto={setProductoDetalle} />
 		</div>
 	);
 }

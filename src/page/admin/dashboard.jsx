@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsBoxArrowRight } from "react-icons/bs";
 import { limpiarToken } from "../../api/auth";
-import { obtenerProducto } from "../../api/productos/producto";
+import { obtenerAllProducto } from "../../api/productos/producto";
 import "./dashboard.css";
 import ProductosAdmin from "./components/ProductosAdmin";
 import DetalleProducto from "./components/DetalleProducto";
@@ -18,7 +18,7 @@ function Dashboard() {
 
 	const handleVerProducto = async (producto) => {
 		try {
-			const detalle = await obtenerProducto(producto.id);
+			const detalle = await obtenerAllProducto(producto.id);
 			setProductoSeleccionado(detalle);
 		} catch (error) {
 			console.error("Error al cargar detalle del producto:", error);

@@ -23,6 +23,12 @@ export const obtenerProducto = async (id) => {
 	return data;
 };
 
+// ================== LISTAR TODO PRODUCTO ==================
+export const obtenerAllProducto = async (id) => {
+	const { data } = await api.get(`/productos/detalle/${id}`);
+	return data;
+};
+
 // ================== CREAR PRODUCTO Y DETALLE ==================
 export const crearProducto = async (producto) => {
 	const { data } = await api.post("/productos", producto);
@@ -37,12 +43,12 @@ export const actualizarProducto = async (id, producto) => {
 
 // ================== ELIMINAR PRODUCTO Y DETALLE ==================
 export const eliminarProducto = async (id) => {
-	const { data } = await api.delete(`/productos/${id}/deactivate`);
+	const { data } = await api.patch(`/productos/${id}/deactivate`);
 	return data;
 };
 
 // ================== RESTAURAR PRODUCTO ==================
 export const restaurarProducto = async (id) => {
-	const { data } = await api.put(`/productos/${id}/restaurar`);
+	const { data } = await api.patch(`/productos/${id}/restore`);
 	return data;
 };
