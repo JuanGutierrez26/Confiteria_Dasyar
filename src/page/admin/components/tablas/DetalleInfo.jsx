@@ -13,8 +13,9 @@ function TableDetalleInfo({ producto, setProducto }) {
 	const [modoEdicion, setModoEdicion] = useState(false);
 
 	const [informacionActual, setInformacionActual] = useState({
-		titulo: "",
-		descripcion: "",
+		tipo: "",
+		contenido: "",
+		orden: 1,
 	});
 
 	const [informacionEliminar, setInformacionEliminar] = useState(null);
@@ -32,12 +33,13 @@ function TableDetalleInfo({ producto, setProducto }) {
 		}
 	};
 
-	const handleCrear = () => {
+	const handleCrearInfo = () => {
 		setModoEdicion(false);
 
 		setInformacionActual({
-			titulo: "",
-			descripcion: "",
+			tipo: "",
+			contenido: "",
+			orden: 1,
 		});
 	};
 
@@ -46,17 +48,24 @@ function TableDetalleInfo({ producto, setProducto }) {
 
 		setInformacionActual({
 			id: informacion.id,
-			titulo: informacion.titulo,
-			descripcion: informacion.descripcion,
+			tipo: informacion.tipo,
+			contenido: informacion.contenido,
+			orden: informacion.orden ?? 1,
 		});
 	};
 
 	const handleGuardar = async () => {
 		try {
+			const payload = {
+				tipo: informacionActual.tipo,
+				contenido: informacionActual.contenido,
+				orden: Number(informacionActual.orden || 1),
+			};
+
 			if (modoEdicion) {
-				await actualizarInformacion(informacionActual.id, informacionActual);
+				await actualizarInformacion(informacionActual.id, payload);
 			} else {
-				await crearInformacion(producto.detalle.id, informacionActual);
+				await crearInformacion(producto.detalle.id, payload);
 			}
 
 			await cargarInformacion();
@@ -100,8 +109,8 @@ function TableDetalleInfo({ producto, setProducto }) {
 						type="button"
 						className="btn btn-dark btn-sm btn__Agregar"
 						data-bs-toggle="modal"
-						data-bs-target="#modalEspecificacion"
-						onClick={handleCrear}
+						data-bs-target="#modalInformacion"
+						onClick={handleCrearInfo}
 					>
 						<FaPlus />
 						Agregar
@@ -129,10 +138,23 @@ function TableDetalleInfo({ producto, setProducto }) {
 										<td>{info.orden}</td>
 
 										<td>
-											<strong>{info.tipo}</strong>
+											<strong className="text-capitalize">{info.tipo}</strong>
 										</td>
 
-										<td>{info.contenido}</td>
+										<td>
+											{info.tipo === "imagen" ? (
+												<a
+													href={info.contenido}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="badge bg-primary text-decoration-none"
+												>
+													{info.contenido}
+												</a>
+											) : (
+												info.contenido
+											)}
+										</td>
 
 										<td className="acciones">
 											<div className="dropdown">
@@ -182,6 +204,99 @@ function TableDetalleInfo({ producto, setProducto }) {
 							)}
 						</tbody>
 					</table>
+
+					{/* Modal Guardar y Editar */}
+					<div className="modal fade" id="modalInformacion" tabIndex="-1">
+						<div className="modal-dialog modal-dialog-centered">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title">
+										{modoEdicion ? "Editar Información" : "Agregar Información"}
+									</h5>
+
+									<button className="btn-close" data-bs-dismiss="modal" />
+								</div>
+
+								<div className="modal-body">
+									<label className="form-label">Tipo</label>
+									<select
+										className="form-control mb-3"
+										value={informacionActual.tipo}
+										onChange={(e) =>
+											setInformacionActual({
+												...informacionActual,
+												tipo: e.target.value,
+											})
+										}
+									>
+										<option value="">Seleccione un tipo</option>
+										<option value="texto">Texto</option>
+										<option value="imagen">Imagen</option>
+									</select>
+									<label className="form-label">Contenido</label>
+									<textarea
+										className="form-control"
+										rows="3"
+										value={informacionActual.contenido}
+										onChange={(e) =>
+											setInformacionActual({
+												...informacionActual,
+												contenido: e.target.value,
+											})
+										}
+									/>
+
+									<label className="form-label">Orden</label>
+									<input
+										className="form-control mb-3"
+										value={informacionActual.orden}
+										onChange={(e) =>
+											setInformacionActual({
+												...informacionActual,
+												orden: Number(e.target.value),
+											})
+										}
+									/>
+								</div>
+
+								<div className="modal-footer">
+									<button className="btn btn-secondary" data-bs-dismiss="modal">
+										Cancelar
+									</button>
+
+									<button className="btn btn-primary" onClick={handleGuardar}>
+										{modoEdicion ? "Actualizar" : "Guardar"}
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Modal Eliminar */}
+					<div className="modal fade" id="modalEliminarInformacion" tabIndex="-1">
+						<div className="modal-dialog modal-dialog-centered">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title">Eliminar especificación</h5>
+								</div>
+
+								<div className="modal-body">
+									¿Eliminar la especificación
+									<strong> {informacionEliminar?.titulo}</strong>?
+								</div>
+
+								<div className="modal-footer">
+									<button className="btn btn-secondary" data-bs-dismiss="modal">
+										Cancelar
+									</button>
+
+									<button className="btn btn-danger" onClick={handleEliminar}>
+										Eliminar
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</>
