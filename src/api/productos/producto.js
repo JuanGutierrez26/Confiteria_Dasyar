@@ -1,5 +1,6 @@
 import api from "../axios";
 
+// ================== LISTAR PRODUCTO ==================
 export const obtenerProductos = async (search = "", categoria = "") => {
 	const params = {};
 	if (search) params.search = search;
@@ -11,22 +12,43 @@ export const obtenerProductos = async (search = "", categoria = "") => {
 	return data;
 };
 
+export const obtenerProductosAdmin = async () => {
+	const { data } = await api.get("/productos/admin");
+	return data;
+};
+
+// ================== LISTAR DETALLE PRODUCTO ==================
 export const obtenerProducto = async (id) => {
 	const { data } = await api.get(`/productos/${id}`);
 	return data;
 };
 
+// ================== LISTAR TODO PRODUCTO ==================
+export const obtenerAllProducto = async (id) => {
+	const { data } = await api.get(`/productos/detalle/${id}`);
+	return data;
+};
+
+// ================== CREAR PRODUCTO Y DETALLE ==================
 export const crearProducto = async (producto) => {
 	const { data } = await api.post("/productos", producto);
 	return data;
 };
 
+// ================== ACTUALIZAR PRODUCTO Y DETALLE ==================
 export const actualizarProducto = async (id, producto) => {
 	const { data } = await api.put(`/productos/${id}`, producto);
 	return data;
 };
 
+// ================== ELIMINAR PRODUCTO Y DETALLE ==================
 export const eliminarProducto = async (id) => {
-	const { data } = await api.delete(`/productos/${id}`);
+	const { data } = await api.patch(`/productos/${id}/deactivate`);
+	return data;
+};
+
+// ================== RESTAURAR PRODUCTO ==================
+export const restaurarProducto = async (id) => {
+	const { data } = await api.patch(`/productos/${id}/restore`);
 	return data;
 };
