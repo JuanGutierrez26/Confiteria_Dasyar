@@ -43,7 +43,7 @@ function TableDetalleInfo({ producto, setProducto }) {
 		});
 	};
 
-	const handleEditar = (informacion) => {
+	const handleEditarInfo = (informacion) => {
 		setModoEdicion(true);
 
 		setInformacionActual({
@@ -54,7 +54,7 @@ function TableDetalleInfo({ producto, setProducto }) {
 		});
 	};
 
-	const handleGuardar = async () => {
+	const handleGuardarInfo = async () => {
 		try {
 			const payload = {
 				tipo: informacionActual.tipo,
@@ -80,7 +80,7 @@ function TableDetalleInfo({ producto, setProducto }) {
 		}
 	};
 
-	const handleEliminar = async () => {
+	const handleEliminarInfo = async () => {
 		if (!informacionEliminar) return;
 
 		try {
@@ -172,7 +172,7 @@ function TableDetalleInfo({ producto, setProducto }) {
 															className="dropdown-item"
 															data-bs-toggle="modal"
 															data-bs-target="#modalInformacion"
-															onClick={() => handleEditar(info)}
+															onClick={() => handleEditarInfo(info)}
 														>
 															<BsPencil className="me-2" />
 															Editar
@@ -264,7 +264,7 @@ function TableDetalleInfo({ producto, setProducto }) {
 										Cancelar
 									</button>
 
-									<button className="btn btn-primary" onClick={handleGuardar}>
+									<button className="btn btn-primary" onClick={handleGuardarInfo}>
 										{modoEdicion ? "Actualizar" : "Guardar"}
 									</button>
 								</div>
@@ -290,7 +290,7 @@ function TableDetalleInfo({ producto, setProducto }) {
 										Cancelar
 									</button>
 
-									<button className="btn btn-danger" onClick={handleEliminar}>
+									<button className="btn btn-danger" onClick={handleEliminarInfo}>
 										Eliminar
 									</button>
 								</div>

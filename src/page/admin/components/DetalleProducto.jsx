@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import TableEspecificaciones from "./tablas/Especificaciones";
 import TableDetalleInfo from "./tablas/DetalleInfo";
+import TableImage from "./tablas/Imagenes";
 
 function DetalleProducto({ producto, onVolver }) {
 	const [productoDetalle, setProductoDetalle] = useState(producto);
@@ -53,8 +54,12 @@ function DetalleProducto({ producto, onVolver }) {
 					<img src={productoDetalle.detalle.imagen_principal} alt="Imagen del producto" />
 				</div>
 			</div>
+
 			<TableEspecificaciones producto={productoDetalle} setProducto={setProductoDetalle} />
+
 			<TableDetalleInfo producto={productoDetalle} setProducto={setProductoDetalle} />
+			
+			<TableImage producto={productoDetalle} setProducto={setProductoDetalle} />
 		</div>
 	);
 }
