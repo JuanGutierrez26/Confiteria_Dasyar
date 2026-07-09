@@ -90,6 +90,59 @@ body {
 	justify-content: center;
 }
 
+/* PRODUCTO */
+.titule__Btn {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.btn__Agregar {
+	border-radius: 12px;
+	padding: 8px 30px;
+	font-size: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+}
+.image-dropzone {
+	width: 100%;
+	min-height: 220px;
+
+	border: 3px dashed #bdbdbd;
+	border-radius: 12px;
+
+	background: #ececec;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	cursor: pointer;
+
+	transition: 0.3s;
+}
+
+.image-dropzone:hover {
+	background: #e2e2e2;
+}
+
+.image-dropzone-success {
+	background: #d1f7d8;
+	border-color: #1fa750;
+}
+
+.image-dropzone p {
+	margin: 0;
+	text-align: center;
+}
+
+.image-dropzone i {
+	color: #777;
+	font-size: 60px;
+}
+
 /* DETALLE PRODUCTO */
 .btn-return {
 	background-color: black;
