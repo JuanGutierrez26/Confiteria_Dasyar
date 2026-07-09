@@ -233,7 +233,9 @@
 	border-radius: 25px;
 	cursor: pointer;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.37);
-	transition: transform 0.25s ease, box-shadow 0.25s ease;
+	transition:
+		transform 0.25s ease,
+		box-shadow 0.25s ease;
 }
 
 .cardProducto:hover {
@@ -246,14 +248,14 @@
 	border-radius: 25px !important;
 }
 
-.bodyProducto{
-	padding: 10px 40px 30px 40px
+.bodyProducto {
+	padding: 10px 40px 30px 40px;
 }
 
-.bodyProducto > h5{
+.bodyProducto > h5 {
 	font-weight: bolder;
 	font-size: 18px;
-	margin: 0
+	margin: 0;
 }
 
 /*======================
@@ -500,10 +502,9 @@
 /* Sending */
 
 .contact__success {
-
 	margin-top: 18px;
 
-	color: #5CFF7A;
+	color: #5cff7a;
 
 	font-weight: 600;
 
@@ -513,7 +514,6 @@
 }
 
 .contact__error {
-
 	margin-top: 18px;
 
 	color: #ff5a5a;
@@ -526,84 +526,172 @@
 }
 
 .contact__form button:disabled {
-
 	background: #b4a6c8;
 
 	cursor: not-allowed;
 
-	opacity: .8;
+	opacity: 0.8;
 }
 
 /* HERO RESPONSIVE */
-
-.hero__content {
-	position: relative;
-	z-index: 2;
-	width: 100%;
-	color: white;
-	margin: 0;
-	padding-left: clamp(20px, 8vw, 100px);
+.menu-open {
+	background-color: #000;
 }
 
-
-.hero__subtitle {
-	font-size: clamp(20px, 4vw, 36px);
-	color: #f4498c;
-	font-weight: 600;
-	margin: 0;
-	text-align: center;
+@media (max-width: 991px) {
+	.btn__navbar {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
+@media (max-width: 1440px) {
+	.hero__title {
+		font-size: 80px;
+		letter-spacing: 25px;
+		margin: -20px 0 -20px 150px;
+	}
 
-.hero__title {
-	font-size: clamp(40px, 10vw, 150px);
-	color: #f4498c;
-	font-weight: 900;
-	letter-spacing: clamp(3px, 2vw, 40px);
-	margin: 10px auto;
-	text-align: center;
-	width: 100%;
+	.hero__content {
+		margin-left: 50px;
+	}
+
+	.catalogoSection {
+		padding: 10px 120px;
+	}
 }
 
+@media (max-width: 1024px) {
+	.hero__title {
+		font-size: 60px;
+		margin: -20px 0 -10px 0;
+		letter-spacing: 20px;
+	}
 
-.hero__description {
-	width: min(90%, 680px);
-	font-size: clamp(14px, 2vw, 18px);
-	line-height: 1.6;
-	margin: 30px auto 0;
-	text-align: center;
+	.hero__content {
+		text-align: center;
+		margin-left: 0px;
+	}
+
+	.hero__subtitle {
+		font-size: 30px;
+		margin: 0;
+	}
+
+	.hero__description {
+		text-align: center;
+		width: 100%;
+		padding: 0 150px;
+		font-size: 15px;
+		margin: 10px 0 0 0;
+	}
+	.hero__buttons {
+		margin: 10px 0 0 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.btn {
+		border: none;
+		border-radius: 40px;
+		padding: 5px 35px;
+		font-size: 1rem;
+		cursor: pointer;
+	}
+
+	.catalogoSection {
+		padding: 10px 80px;
+	}
 }
 
-
-.hero__buttons {
-	margin: 25px auto 0;
-	display: flex;
-	justify-content: center;
-	gap: 15px;
-	flex-wrap: wrap;
+@media (max-width: 768px) {
+	.hero__subtitle {
+		font-size: 20px;
+		margin: 0;
+	}
+	.hero__title {
+		font-size: 50px;
+		margin: -10px 0 -10px 0;
+		letter-spacing: 15px;
+	}
+	.hero__description {
+		padding: 0 100px;
+	}
+	.contact__image {
+		display: none;
+	}
+	.about{
+		padding-bottom: 0;
+	}
+	.inputCatalogo {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+	.productosContainer {
+		grid-template-columns: 1fr 1fr;
+	}
+	.catalogoSection {
+		padding: 20px 80px;
+	}
+	.footer__container {
+		grid-template-columns: 1fr 1fr;
+	}
 }
 
-
-.btn {
-	padding: 10px 35px;
-	font-size: 1rem;
-}
-.contact__title {
-	color: #f4498c;
-	font-size: 38px;
-	font-weight: 900;
-	margin-bottom: 50px;
-	text-align: left;
-}
-
-.hero__title {
-	font-size: 50px;
-	color: #f4498c;
-	font-weight: 900;
-	letter-spacing: 5px;
-	margin: 5px auto;
-	text-align: center;
-	width: 100%;
-	line-height: 1;
+@media (max-width: 600px) {
+	.hero__title {
+		letter-spacing: 12px;
+	}
+	.productosContainer {
+		grid-template-columns: 1fr;
+	}
+	.catalogoSection {
+		padding: 15px 40px;
+	}
 }
 
+@media (max-width: 425px) {
+	.navbar{
+		padding: 6px;
+	}
+	.hero__title {
+		font-size: 40px;
+		letter-spacing: 5px;
+		margin-bottom: 0;
+	}
+	.hero__description {
+		display: none;
+	}
+	.imgProducto{
+		margin: 20px;
+	}
+	.bodyProducto{
+		padding: 0 25px 25px 25px;
+	}
+	.card-title{
+		margin-bottom: 10px !important;
+	}
+	.card-text{
+		margin-bottom: 15px;
+	}
+	.footer{
+		padding: 50px 15px;
+	}
+	.footer__container {
+		grid-template-columns: 1fr;
+	}
+	h2{
+		font-size: 30px !important;
+	}
+	p{
+		font-size: 15px !important;
+		line-height: 0;
+	}
+	.btn-ContactUs{
+		padding: 8px 15px !important;
+		border-radius: 10px !important;
+		width: 100% !important;
+	}
+}
