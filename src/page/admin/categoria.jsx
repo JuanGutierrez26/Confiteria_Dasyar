@@ -1,33 +1,16 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { BsBoxArrowRight } from "react-icons/bs";
+import { Link, useNavigate } from "react-router-dom";
+import TableCategoria from "./components/tablas/TableCategoria";
 import { limpiarToken } from "../../api/auth";
-import { obtenerAllProducto } from "../../api/productos/producto";
-import "./dashboard.css";
-import ProductosAdmin from "./components/ProductosAdmin";
-import DetalleProducto from "./components/DetalleProducto";
 
-function Dashboard() {
+function Categoria() {
 	const navigate = useNavigate();
 	const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
 	const handleLogout = () => {
 		limpiarToken();
 		navigate("/login", { replace: true });
-	};
-
-	const handleVerProducto = async (producto) => {
-		try {
-			const detalle = await obtenerAllProducto(producto.id);
-			setProductoSeleccionado(detalle);
-		} catch (error) {
-			console.error("Error al cargar detalle del producto:", error);
-			setProductoSeleccionado(producto);
-		}
-	};
-
-	const handleVolver = () => {
-		setProductoSeleccionado(null);
 	};
 
 	return (
@@ -41,13 +24,13 @@ function Dashboard() {
 
 					{/* Menu */}
 					<ul className="nav flex-column mt-3 gap-2">
-						<li className="nav-item active">
+						<li className="nav-item">
 							<Link to="/admin/dashboard" className="nav-link">
 								Productos
 							</Link>
 						</li>
 
-						<li className="nav-item">
+						<li className="nav-item active">
 							<Link to="/admin/categoria" className="nav-link">
 								Categoría
 							</Link>
@@ -70,14 +53,10 @@ function Dashboard() {
 				</div>
 				<div className="content">
 					<div className="contentTitle">
-						<h2>Administrar Productos</h2>
+						<h2>Administrar Categoria</h2>
 					</div>
 					<main className="contentMain">
-						{productoSeleccionado ? (
-							<DetalleProducto producto={productoSeleccionado} onVolver={handleVolver} />
-						) : (
-							<ProductosAdmin onVerProducto={handleVerProducto} />
-						)}
+						<TableCategoria />
 					</main>
 				</div>
 			</section>
@@ -85,4 +64,4 @@ function Dashboard() {
 	);
 }
 
-export default Dashboard;
+export default Categoria;

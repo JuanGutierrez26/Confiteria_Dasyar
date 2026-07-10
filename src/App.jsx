@@ -6,6 +6,7 @@ import NotFound from "./page/NotFound";
 import Dashboard from "./page/admin/dashboard";
 import "./App.css";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Categoria from "./page/admin/categoria";
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 
 				<Route element={<ProtectedRoute />}>
 					<Route path="/admin/dashboard" element={<Dashboard />} />
+					<Route path="/admin/categoria" element={<Categoria />} />
 				</Route>
 
 				{/* Rutas públicas */}
